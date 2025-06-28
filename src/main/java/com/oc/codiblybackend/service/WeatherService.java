@@ -17,6 +17,7 @@ public class WeatherService {
 
     private static final double POWER = 2.5;
     private static final double EFFICIENCY = 0.2;
+    private static final int MIN_RAINY_DAY_CODE = 51;
 
     public List<WeatherResponseDTO> getForecast(float lat, float lon){
         List<String> dailyParams = List.of("weathercode", "temperature_2m_min", "temperature_2m_max", "sunshine_duration");
@@ -65,7 +66,7 @@ public class WeatherService {
         float minTemperature = minTemps.stream().min(Float::compare).orElse(Float.NaN);
         float maxTemperature = maxTemps.stream().max(Float::compare).orElse(Float.NaN);
 
-        long rainyDays = weatherCodes.stream().filter(code -> code >= 51).count();
+        long rainyDays = weatherCodes.stream().filter(code -> code >= MIN_RAINY_DAY_CODE).count();
 
         String summary = (rainyDays >= 4) ? "rainy week" : "mostly dry";
 
